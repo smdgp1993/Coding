@@ -1,0 +1,102 @@
+Merge two sorted linked lists
+Given two sorted linked lists consisting of N and M nodes respectively. The task is to merge both of the list (in-place) and return head of the merged list.
+
+Method1 ( Not In-Place Algo):
+
+struct Node* SortedMerge(struct Node* a, struct Node* b)
+{
+    
+    struct Node* res=NULL,*pre=NULL;
+    struct Node* head;
+    while(a!=NULL && b!=NULL)
+    {
+        res=(struct Node*)malloc(sizeof(struct Node));
+        if(a->data < b->data)
+        {
+            res->data=a->data;
+            a=a->next;
+        }
+        else
+        {
+           res->data=b->data;
+           b=b->next; 
+        }
+        res->next=NULL;
+        if(pre!=NULL)
+            pre->next=res;
+        else
+            head=res;
+        pre=res;
+    
+    }
+    
+    struct Node* temp=(a==NULL)?b:a;
+    while(temp!=NULL)
+    {
+      res=(struct Node*)malloc(sizeof(struct Node));
+      res->data=temp->data;
+      res->next=NULL;
+      temp=temp->next;
+      pre->next=res;
+      pre=res;
+    }
+    
+    return head;
+}
+
+Method2 (In-place algo):
+
+struct Node* SortedMerge(struct Node* a, struct Node* b)
+{
+    
+    struct Node* res=NULL;
+    struct Node** lastptr=&res;;
+    while(1)
+    {
+        if(a==NULL)
+        {
+            *lastptr=b;
+            break;
+        }
+        else if(b==NULL)
+        {
+            *lastptr=a;
+            break;
+        }
+        if(a->data < b->data)
+        {
+            MoveNode(lastptr, &a);
+        }
+        else
+        {
+          MoveNode(lastptr,&b); 
+        }
+        lastptr=&((*lastptr)->next);
+    }
+    
+    return res;
+}
+
+Method3( Recursion ):
+
+struct Node* SortedMerge(struct Node* a, struct Node* b)
+{
+    
+    struct Node* root=NULL;
+    
+    if(a==NULL) return b;
+    if(b==NULL) return a;
+    
+    if(a->data<b->data)
+    {
+        root=a;
+        root->next=SortedMerge(a->next,b);
+    }
+    else
+    {
+        root=b;
+        root->next=SortedMerge(a,b->next);
+    }
+    
+    return root;
+}
