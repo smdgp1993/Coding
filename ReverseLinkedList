@@ -1,0 +1,39 @@
+Ques: Given a linked list of N nodes. The task is to reverse this list.
+
+Method1 : ( Using 3 pointers)
+struct Node* reverseList(struct Node *head)
+    {
+        struct Node* ptr1=head,*ptr2=head->next;
+        struct Node* temp;
+        ptr1->next=NULL;
+        while(ptr1!=NULL && ptr2!=NULL)
+        {
+            temp=ptr2->next;
+            ptr2->next=ptr1;
+            ptr1=ptr2;
+            ptr2=temp;
+        }
+        return ptr1;
+    }
+    
+Time Complexity: O(n) 
+Space Complexity: O(1)
+    
+ Method 2: (Using recursive approach)
+ 
+ struct Node* reverseList(struct Node *head)
+    {
+        if (head == NULL || head->next == NULL)
+            return head;
+  
+        /* reverse the rest list and put 
+          the first element at the end */
+        struct Node* rest = reverseList(head->next);
+        head->next->next = head;
+  
+        head->next = NULL;
+        return rest;
+    }
+    
+Time Complexity: O(n) 
+Space Complexity: O(1)
